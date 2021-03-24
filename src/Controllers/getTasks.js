@@ -16,6 +16,11 @@ exports.getTasks = (req, res, next) => {
           status: 'True',
           tasks: tks
         })
+      } else {
+        res.status(200).json({
+          status: 'True',
+          tasks: []
+        })
       }
     }).catch((err) => {
       res.status(422).json({
