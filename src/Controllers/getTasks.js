@@ -18,7 +18,6 @@ exports.getTasks = (req, res, next) => {
         })
       }
     }).catch((err) => {
-      console.log('this is the error occuring while getting all the tasks: ', err)
       res.status(422).json({
         status: 'False',
         message: 'Something Got Wrong'
@@ -30,7 +29,6 @@ exports.postTask = (req, res, next) => {
   const { customerName, customerQuantity, customerSubName } = req.body || {};
   Task.find({ taskName: customerName })
     .then((tasks) => {
-      console.log(tasks);
       if (tasks.length == 0) {
         const newTask = new Task({
           taskName: customerName,
@@ -70,11 +68,9 @@ exports.postTask = (req, res, next) => {
 
 exports.editTasks = (req, res, next) => {
   const { id, customerName, customerQuantity, customerSubName } = req.body || {}
-  console.log('req: ', req.body)
   Task.findById(id)
     .then((task) => {
-      console.log('tasks: ', task)
-      if (task.length > 0) {
+      if (task) {
         task.quantity = customerQuantity;
         task.subName = customerSubName;
         task.taskName = customerName;
@@ -84,7 +80,6 @@ exports.editTasks = (req, res, next) => {
         return { status: false }
       }
     }).then((data) => {
-      console.log(data)
       if (data.status == true) {
         res.status(200).json({
           message: 'Task Edit Successfull',
@@ -107,7 +102,6 @@ exports.editTasks = (req, res, next) => {
 }
 
 exports.deleteTask = (req, res, next) => {
-  console.log('this is the request body: ', req.body);
   const { id } = req.body || {}
   Task.findByIdAndDelete(id)
     .then((task) => {
